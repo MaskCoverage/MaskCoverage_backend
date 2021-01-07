@@ -66,7 +66,7 @@ def main(imgpath):
     origin_model = origin_model.to(device)
     origin_model.eval()
     
-    src_img = cv2.imread(os.path.relpath(imgpath))
+    src_img = cv2.imread(imgpath)
     img = cv2.cvtColor(src_img, cv2.COLOR_BGR2RGB)
     img_tensor = torch.from_numpy(img/255.).permute(2,0,1).float().to(device)
 
