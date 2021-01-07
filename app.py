@@ -10,7 +10,7 @@ app = Flask(__name__, static_url_path="")
 
 @app.route("/save-img", methods=["GET"])
 def save_predict_img():
-    save_img()
+    save_img("./data/test.jpg")
 
 @app.route("/show-img", methods=["GET"])
 def show_img():

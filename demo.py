@@ -53,7 +53,7 @@ def get_model_instance_segmentation(num_classes):
     return model
 
 @torch.no_grad()
-def main():
+def main(imgpath):
     args = parse_arg()
     input = []
     num_classes = 91
@@ -65,8 +65,8 @@ def main():
     origin_model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
     origin_model = origin_model.to(device)
     origin_model.eval()
-
-    src_img = cv2.imread("./data/test.jpg")
+    
+    src_img = cv2.imread(os.path.relpath(imgpath))
     img = cv2.cvtColor(src_img, cv2.COLOR_BGR2RGB)
     img_tensor = torch.from_numpy(img/255.).permute(2,0,1).float().to(device)
 
@@ -125,13 +125,13 @@ def main():
         cv2.rectangle(src_img,(0, 0),(80,20),(0,0,0),thickness=cv2.FILLED)
         cv2.putText(src_img, 'no person', org=(2, 15), fontFace=cv2.FONT_HERSHEY_DUPLEX, 
                 fontScale=0.5, thickness=1, lineType=cv2.LINE_AA, color=(255, 255, 0))
-    
-    cv2.imwrite('./result/People with mask.jpg', src_img)
+    predictpath = './result/'+ imgpath.split('/')[-1]
+    cv2.imwrite(predictpath, src_img)
+    return predictpath
     # cv2.imshow('People with mask',src_img)
     # cv2.waitKey()
     # cv2.destroyAllWindows()
     
  
-if __name__ == "__main__":
-    print("in")
-    main()
+# if __name__ == "__main__":
+#     main("./data/8.png")
